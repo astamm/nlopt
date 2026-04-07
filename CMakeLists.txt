@@ -53,8 +53,6 @@ endif ()
 
 include (GNUInstallDirs)
 
-set (NLOPT_R_BINDIR "" CACHE STRING "Directory containing the R executable")
-
 # Offer the user the choice of overriding the installation directories
 set (NLOPT_INSTALL_LIBDIR     ${CMAKE_INSTALL_LIBDIR}        CACHE STRING "Installation directory for libraries")
 set (NLOPT_INSTALL_BINDIR     ${CMAKE_INSTALL_BINDIR}        CACHE STRING "Installation directory for executables")
@@ -230,12 +228,6 @@ add_dependencies(${nlopt_lib} generate-cpp)
 if (NLOPT_LUKSAN)
   target_include_directories(${nlopt_lib} PRIVATE src/algs/luksan)
   target_compile_definitions (${nlopt_lib} PRIVATE NLOPT_LUKSAN)
-endif ()
-
-if (NOT "${NLOPT_R_BINDIR}" STREQUAL "")
-  find_package(R REQUIRED)
-  target_include_directories(${nlopt_lib} PRIVATE ${R_INCLUDE_DIR})
-  target_compile_definitions(${nlopt_lib} PRIVATE NLOPT_R)
 endif ()
 
 if (M_LIBRARY)

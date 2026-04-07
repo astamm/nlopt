@@ -189,13 +189,8 @@ char *nlopt_vsprintf(char *p, const char *format, va_list ap) {
   int ret;
 
   p = (char *)realloc(p, len);
-#ifndef NLOPT_R
   if (!p)
-    abort();
-#else
-  if (!p)
-    Rf_error("Memory allocation failed in nlopt_vsprintf");
-#endif
+    nlopt_fatal("Memory allocation failed in nlopt_vsprintf");
 
   /* TODO: check HAVE_VSNPRINTF, and fallback to vsprintf otherwise */
   while ((ret = vsnprintf(p, len, format, ap)) < 0 || (size_t)ret >= len) {
@@ -203,13 +198,8 @@ char *nlopt_vsprintf(char *p, const char *format, va_list ap) {
        if the buffer is too small; older versions (e.g. MS) return -1 */
     len = ret >= 0 ? (size_t)(ret + 1) : (len * 3) >> 1;
     p = (char *)realloc(p, len);
-#ifndef NLOPT_R
     if (!p)
-      abort();
-#else
-    if (!p)
-      Rf_error("Memory allocation failed in nlopt_vsprintf");
-#endif
+      nlopt_fatal("Memory allocation failed in nlopt_vsprintf");
   }
   return p;
 }

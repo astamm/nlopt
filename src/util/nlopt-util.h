@@ -30,10 +30,6 @@
 
 #include "nlopt.h"
 
-#ifdef NLOPT_R
-#include <R_ext/Error.h>
-#endif
-
 /* workaround for Solaris + gcc 3.4.x bug (see configure.ac) */
 #if defined(__GNUC__) && defined(REPLACEMENT_HUGE_VAL)
 #undef HUGE_VAL
@@ -126,6 +122,15 @@ extern void nlopt_stop_msg(const nlopt_stopping *s, const char *format, ...)
 extern void nlopt_stop_log(const nlopt_stopping *s, const char *format, ...)
 #ifdef __GNUC__
     __attribute__((format(printf, 2, 3)))
+#endif
+    ;
+
+/* Report a fatal (unrecoverable) error.  Dispatches to the library-level
+   error callback set via nlopt_set_error_callback(); if none is installed,
+   calls abort().  This function does NOT return. */
+extern void nlopt_fatal(const char *message)
+#ifdef __GNUC__
+    __attribute__((noreturn))
 #endif
     ;
 
