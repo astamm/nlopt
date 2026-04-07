@@ -1,7 +1,3 @@
-
-if (POLICY CMP0078)
-  cmake_policy(SET CMP0078 NEW)
-endif ()
 # clean up old generated source files before running SWIG, useful for Java
 set(UseSWIG_MODULE_VERSION 2)
 include (UseSWIG)
@@ -29,9 +25,9 @@ if (Python_NumPy_FOUND AND NLOPT_CXX)
                     OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/python
                     OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
-  target_link_libraries (nlopt_python ${nlopt_lib})
-  target_link_libraries (nlopt_python Python::NumPy)
-  target_link_libraries (nlopt_python Python::Module)
+  target_link_libraries (nlopt_python PRIVATE ${nlopt_lib})
+  target_link_libraries (nlopt_python PRIVATE Python::NumPy)
+  target_link_libraries (nlopt_python PRIVATE Python::Module)
 
   set_target_properties (nlopt_python PROPERTIES OUTPUT_NAME nlopt)
   set_target_properties (nlopt_python PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
@@ -58,8 +54,8 @@ if (GUILE_FOUND AND NLOPT_CXX)
 
   target_include_directories (nlopt_guile PRIVATE ${GUILE_INCLUDE_DIRS})
 
-  target_link_libraries (nlopt_guile ${nlopt_lib})
-  target_link_libraries (nlopt_guile ${GUILE_LIBRARIES})
+  target_link_libraries (nlopt_guile PRIVATE ${nlopt_lib})
+  target_link_libraries (nlopt_guile PRIVATE ${GUILE_LIBRARIES})
   set_target_properties (nlopt_guile PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
   file (RELATIVE_PATH _REL_GUILE_SITE_PATH ${GUILE_ROOT_DIR} ${GUILE_SITE_DIR})
@@ -87,8 +83,8 @@ if (JNI_FOUND AND Java_FOUND AND SWIG_FOUND AND NLOPT_CXX)
 
   set (CMAKE_SWIG_FLAGS)
 
-  target_link_libraries (nlopt_java ${nlopt_lib})
-  target_link_libraries (nlopt_java JNI::JNI)
+  target_link_libraries (nlopt_java PRIVATE ${nlopt_lib})
+  target_link_libraries (nlopt_java PRIVATE JNI::JNI)
 
   set_target_properties (nlopt_java PROPERTIES OUTPUT_NAME nloptjni)
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
