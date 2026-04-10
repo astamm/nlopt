@@ -1,0 +1,69 @@
+---
+# Closest match to the formatting style used in src/api/ and src/util/.
+# Run:  clang-format --dry-run --Werror <file>   to check conformance.
+Language: C
+BasedOnStyle: GNU
+
+# --- Indentation ---
+IndentWidth: 4
+TabWidth: 8
+UseTab: Never
+ContinuationIndentWidth: 4
+
+# --- Column limit ---
+# 95th percentile of existing line lengths is 79; a handful of long legacy
+# lines (Fortran-derived code, deprecated.c) are left as-is by clang-format.
+ColumnLimit: 79
+
+# --- Brace placement ---
+# GNU style: opening brace of a function definition goes on its own line;
+# opening brace of a control statement (if/for/while/…) stays on the same
+# line.  This matches options.c and the majority of src/api/ and src/util/.
+BreakBeforeBraces: GNU
+
+# --- Pointer alignment ---
+# Dominant style (3012 vs 19 occurrences): star adjacent to the variable
+# name, e.g.  double *x;  and  (double *) malloc(…)
+PointerAlignment: Right
+DerivePointerAlignment: false
+
+# --- Spaces ---
+# Always a space before the opening paren of a control keyword:
+#   if (cond)   for (…)   while (…)   switch (…)
+SpaceBeforeParens: ControlStatements
+# No spaces inside parentheses: foo(x, y)  not  foo( x, y )
+SpacesInParentheses: false
+SpaceInEmptyParentheses: false
+# Space after a C-style cast:  (double *) ptr
+SpaceAfterCStyleCast: true
+
+# --- Alignment ---
+# Align trailing comments within a block (widely used in optimize.c structs).
+AlignTrailingComments: true
+# Do NOT re-align consecutive assignments or declarations; the existing code
+# only aligns trailing comments, not the = signs or type widths.
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+# When a call/declaration wraps, align continuation lines under the opening
+# paren: nlopt_result foo(int a,
+#                         int b,  …
+AlignAfterOpenBracket: Align
+
+# --- Short constructs ---
+# Allow single-line short functions (used in mma.c: static double sqr(…) {…})
+AllowShortFunctionsOnASingleLine: All
+# Never collapse if-body onto the same line as the if keyword.
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+# --- Includes ---
+# Do not sort or regroup #include directives; each subsystem has its own
+# intentional include order.
+SortIncludes: Never
+
+# --- Miscellaneous ---
+IndentCaseLabels: false
+# Ternary operators used inline: keep  x ? a : b  on one line where possible.
+BreakBeforeTernaryOperators: false
+# Return types stay on the same line as the function name.
+PenaltyReturnTypeOnItsOwnLine: 10000
